@@ -3,6 +3,7 @@
     package="com.epam.caloriecalc">
 
     <application
+        android:name=".CalorieCalcApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
