@@ -1,2 +1,1 @@
-# bench-caloriecalc
-Calorie calculator app for Android
+# Calorie calculator app for Android
