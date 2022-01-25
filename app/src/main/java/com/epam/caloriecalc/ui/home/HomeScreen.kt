@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.epam.caloriecalc.data.model.StatType
@@ -55,7 +54,7 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            StatsTextRow(statType = StatType.Energy, statAmount = 2125)
+            StatsTextRow(statType = StatType.Calories, statAmount = 2125)
             StatsTextRow(statType = StatType.Carbs, statAmount = 86)
             StatsTextRow(statType = StatType.Fat, statAmount = 113)
             StatsTextRow(statType = StatType.Protein, statAmount = 129)
