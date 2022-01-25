@@ -1,14 +1,14 @@
 package com.epam.caloriecalc.data.model
 
 sealed class StatType {
-    object Energy : StatType()
+    object Calories : StatType()
     object Carbs : StatType()
     object Fat : StatType()
     object Protein: StatType()
 
     override fun toString(): String {
         return when (this) {
-            Energy -> "Energy"
+            Calories -> "Calories"
             Carbs -> "Carbs"
             Fat -> "Fat"
             Protein -> "Protein"
@@ -17,7 +17,7 @@ sealed class StatType {
 
     fun getUnitLabel(): String {
         return when (this) {
-            Energy -> "kcal"
+            Calories -> "kcal"
             else -> "g"
         }
     }
