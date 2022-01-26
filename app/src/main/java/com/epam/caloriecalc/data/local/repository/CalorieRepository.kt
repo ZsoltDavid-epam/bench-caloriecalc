@@ -19,4 +19,6 @@ interface CalorieRepository {
     fun getIntakeById(intakeId: Int): Flow<IntakeRecord>
 
     fun getAllIntakeHistory(): Flow<List<IntakeWithProduct>>
+
+    fun getAllIntakeInDateInterval(start: Long, end: Long): Flow<List<IntakeWithProduct>>
 }
