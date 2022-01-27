@@ -5,6 +5,8 @@ import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.epam.caloriecalc.R
+import com.epam.caloriecalc.util.Localizations
 
 sealed class NavBarScreenType(
     val route: String,
@@ -13,18 +15,18 @@ sealed class NavBarScreenType(
 ) {
     object Home : NavBarScreenType(
         route = "home",
-        title = "Home",
+        title = Localizations.getString(R.string.screen_home),
         icon = Icons.Default.Home
     )
     object History : NavBarScreenType(
         route = "history",
-        title = "History",
+        title = Localizations.getString(R.string.screen_history),
         icon = Icons.Default.History
     )
 
     object Settings : NavBarScreenType(
         route = "settings",
-        title = "Settings",
+        title = Localizations.getString(R.string.screen_settings),
         icon = Icons.Default.Settings
     )
 }

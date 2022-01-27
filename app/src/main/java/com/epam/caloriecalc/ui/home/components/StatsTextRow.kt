@@ -7,6 +7,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.epam.caloriecalc.data.model.StatType
+import java.util.*
 
 @Composable
 fun StatsTextRow(
@@ -21,7 +22,7 @@ fun StatsTextRow(
     ) {
         Text(text = "$statType:")
 
-        Text(text = "${String.format("%.2f", statAmount)} ${statType.getUnitLabel()}")
+        Text(text = "${String.format(Locale.getDefault(), "%.2f", statAmount)} ${statType.getUnitLabel()}")
 
     }
 

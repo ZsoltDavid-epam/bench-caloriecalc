@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.epam.caloriecalc.R
 import com.epam.caloriecalc.data.model.DailyStat
 import com.epam.caloriecalc.data.model.StatType
 
@@ -17,7 +19,7 @@ fun TodayStats(
 ) {
 
     Row(modifier = Modifier.fillMaxWidth(0.75f)) {
-        Text(text = "Today's stats:")
+        Text(text = stringResource(R.string.todays_stats) + ":")
     }
 
     Spacer(modifier = Modifier.height(24.dp))
