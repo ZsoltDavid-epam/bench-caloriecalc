@@ -40,4 +40,8 @@ class CalorieRepositoryImpl(
     override fun getAllIntakeHistory(): Flow<List<IntakeWithProduct>> {
         return dao.getAllIntakeHistory()
     }
+
+    override fun getAllIntakeInDateInterval(start: Long, end: Long): Flow<List<IntakeWithProduct>> {
+        return dao.getAllIntakeInDateInterval(start, end)
+    }
 }

@@ -15,7 +15,7 @@ interface CalorieDao {
     @Delete
     suspend fun deleteProduct(product: ProductRecord)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertIntake(intake: IntakeRecord)
 
     @Delete
@@ -34,5 +34,9 @@ interface CalorieDao {
     @Transaction
     @Query("SELECT * FROM product_table")
     fun getAllIntakeHistory(): Flow<List<IntakeWithProduct>>
+
+    @Transaction
+    @Query("SELECT * FROM product_table WHERE productId IN (SELECT productId FROM intake_table WHERE timestamp BETWEEN :start AND :end)")
+    fun getAllIntakeInDateInterval(start: Long, end: Long): Flow<List<IntakeWithProduct>>
 
 }

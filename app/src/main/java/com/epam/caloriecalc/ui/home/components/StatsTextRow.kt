@@ -11,7 +11,7 @@ import com.epam.caloriecalc.data.model.StatType
 @Composable
 fun StatsTextRow(
     statType: StatType,
-    statAmount: Int
+    statAmount: Float
 ) {
     Row(
         modifier = Modifier
@@ -21,7 +21,7 @@ fun StatsTextRow(
     ) {
         Text(text = "$statType:")
 
-        Text(text = "$statAmount ${statType.getUnitLabel()}")
+        Text(text = "${String.format("%.2f", statAmount)} ${statType.getUnitLabel()}")
 
     }
 

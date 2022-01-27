@@ -1,21 +1,27 @@
 package com.epam.caloriecalc.ui.home
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.epam.caloriecalc.data.model.StatType
-import com.epam.caloriecalc.ui.home.components.StatsTextRow
+import com.epam.caloriecalc.ui.home.components.TodayStats
 
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val intakeTodayStats by viewModel.intakesTodayStats.collectAsState()
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -46,18 +52,10 @@ fun HomeScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
 
-        ) {
+            ) {
 
-            Row(modifier = Modifier.fillMaxWidth(0.75f)) {
-                Text(text = "Today's stats:")
-            }
+            TodayStats(dailyStat = intakeTodayStats)
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            StatsTextRow(statType = StatType.Calories, statAmount = 2125)
-            StatsTextRow(statType = StatType.Carbs, statAmount = 86)
-            StatsTextRow(statType = StatType.Fat, statAmount = 113)
-            StatsTextRow(statType = StatType.Protein, statAmount = 129)
 
         }
 

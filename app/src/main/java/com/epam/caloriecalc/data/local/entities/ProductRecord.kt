@@ -18,7 +18,7 @@ data class ProductRecord(
     val productId: Int = 0,
     @ColumnInfo(name = PRODUCT_NAME_COLUMN_NAME)
     val name: String = "",
-    val calorie: Float = 0f,
+    val calories: Float = 0f,
     val totalFat: Float = 0f,
     val protein: Float = 0f,
     val carbohydrates: Float = 0f,
