@@ -7,6 +7,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
@@ -34,7 +35,6 @@ fun NavBar(
             )
         }
     }
-
 }
 
 @Composable
@@ -45,10 +45,10 @@ fun RowScope.AddItem(
 ) {
     BottomNavigationItem(
         label = {
-            Text(text = screenType.title)
+            Text(text = stringResource(id = screenType.titleResId))
         },
         icon = {
-            Icon(imageVector = screenType.icon, contentDescription = "${screenType.title} Navigation Icon")
+            Icon(imageVector = screenType.icon, contentDescription = "${stringResource(id = screenType.titleResId)} Navigation Icon")
         },
         selected = currentDestination?.hierarchy?.any {
             it.route == screenType.route

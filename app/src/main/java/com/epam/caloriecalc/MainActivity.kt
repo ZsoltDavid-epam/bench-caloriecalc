@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
                                 navigationIcon = {
                                     Icon(
                                         painterResource(id = R.drawable.ic_calories),
-                                        contentDescription = getString(R.string.app_icon),
+                                        contentDescription = stringResource(R.string.app_icon),
                                         modifier = Modifier.fillMaxSize(0.75f)
                                     )
                                 }
