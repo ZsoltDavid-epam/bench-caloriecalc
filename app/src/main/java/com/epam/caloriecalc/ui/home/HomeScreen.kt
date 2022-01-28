@@ -48,18 +48,12 @@ fun HomeScreen(
 
         Column(
             modifier = Modifier
-                .fillMaxWidth(0.75f)
-                .fillMaxHeight(1f)
-                .offset(x = 32.dp, y = 16.dp),
+                .fillMaxWidth()
+                .fillMaxHeight(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-
             ) {
-
-            TodayStats(dailyStat = intakeTodayStats)
-
-
+            TodayStats(modifier = Modifier.fillMaxWidth(0.5f), dailyStat = intakeTodayStats)
         }
-
     }
 }

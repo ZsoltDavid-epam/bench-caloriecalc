@@ -17,8 +17,7 @@ fun StatsTextRow(
     statAmount: Float
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth(0.75f),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
