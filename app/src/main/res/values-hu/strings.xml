@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">CalorieCalc</string>
+    <string name="todays_stats">Mai statisztika</string>
+    <string name="calories">Kalóriák</string>
+    <string name="carbs">Szénhidrátok</string>
+    <string name="fat">Zsír</string>
+    <string name="protein">Fehérje</string>
+    <string name="unit_kcal">kcal</string>
+    <string name="unit_g">g</string>
+    <string name="add">Hozzáadás</string>
+    <string name="app_icon">Alkalmazás ikon</string>
+    <string name="screen_home">Kezdőlap</string>
+    <string name="screen_history">Előzmények</string>
+    <string name="screen_settings">Beállítások</string>
+</resources>
