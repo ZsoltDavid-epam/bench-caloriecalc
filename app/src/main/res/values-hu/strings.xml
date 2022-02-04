@@ -13,6 +13,10 @@
     <string name="screen_home">Kezdőlap</string>
     <string name="screen_history">Előzmények</string>
     <string name="screen_settings">Beállítások</string>
+    <string name="appearance">Kinézet</string>
+    <string name="theme_device_default">Alapértelmezett</string>
+    <string name="theme_light">Világos mód</string>
+    <string name="theme_dark">Sötét mód</string>
     <string name="details">Részletek</string>
     <string name="undo">Visszavonás</string>
     <string name="snackbar_undo_message">%1$s törölve.</string>
