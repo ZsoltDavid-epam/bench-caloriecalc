@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.epam.caloriecalc.data.local.relations.IntakeWithProduct
 import com.epam.caloriecalc.data.local.repository.CalorieRepository
 import com.epam.caloriecalc.data.model.DailyStat
+import com.epam.caloriecalc.data.settings.SettingsManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -15,8 +17,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: CalorieRepository
+    repository: CalorieRepository,
+    settingsManager: SettingsManager
 ) : ViewModel() {
+
+    val isLoading = MutableStateFlow(true)
+
+    val themeMode = settingsManager.themeMode
 
     val intakesTodayStats = MutableStateFlow(DailyStat())
 
@@ -27,7 +34,10 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            /* Delay for the splash screen loading */
+            delay(1000L)
             intakesTodayStats.value = calculateTodayStats(intakesToday.stateIn(this).value)
+            isLoading.value = false
         }
     }
 

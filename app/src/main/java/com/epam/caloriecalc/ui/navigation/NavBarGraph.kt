@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.epam.caloriecalc.ui.home.HomeScreen
+import com.epam.caloriecalc.ui.settings.SettingsScreen
 
 @Composable
 fun NavBarGraph(
@@ -21,7 +22,7 @@ fun NavBarGraph(
             //HistoryScreen()
         }
         composable(route = NavBarScreenType.Settings.route) {
-            //SettingsScreen()
+            SettingsScreen()
         }
 
     }
