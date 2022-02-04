@@ -1,6 +1,7 @@
 package com.epam.caloriecalc.ui.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.AddTask
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
@@ -27,6 +28,11 @@ sealed class NavBarScreenType(
         route = "settings",
         titleResId = R.string.screen_settings,
         icon = Icons.Default.Settings
+    )
+    object Details : NavBarScreenType(
+        route = "details",
+        titleResId = R.string.details,
+        icon = Icons.Default.Description
     )
 
     object AddItem : NavBarScreenType(

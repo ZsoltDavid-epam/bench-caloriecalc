@@ -13,6 +13,8 @@
     <string name="screen_home">Kezdőlap</string>
     <string name="screen_history">Előzmények</string>
     <string name="screen_settings">Beállítások</string>
+    <string name="details">Részletek</string>
     <string name="undo">Visszavonás</string>
+    <string name="snackbar_undo_message">%1$s törölve.</string>
     <string name="addnewite_title">Új elem felvétele</string>
 </resources>

@@ -12,6 +12,8 @@
     <string name="screen_home">Home</string>
     <string name="screen_history">History</string>
     <string name="screen_settings">Settings</string>
+    <string name="details">Details</string>
+    <string name="snackbar_undo_message">%1$s removed.</string>
     <string name="screen_additem" translatable="false">additem</string>
     <string name="addnewite_title">Add New Item</string>
     <string name="undo">Undo</string>
