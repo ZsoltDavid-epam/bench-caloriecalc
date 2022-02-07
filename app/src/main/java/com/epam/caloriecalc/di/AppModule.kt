@@ -19,23 +19,22 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(app: Application): CalorieDatabase {
-        return Room.databaseBuilder(
+    fun provideDatabase(app: Application): CalorieDatabase =
+        Room.databaseBuilder(
             app,
             CalorieDatabase::class.java,
             Constants.CALORIE_DATABASE_NAME
         ).build()
-    }
 
     @Provides
     @Singleton
-    fun provideCalorieRepository(db: CalorieDatabase): CalorieRepository {
-        return CalorieRepositoryImpl(db.dao)
-    }
+    fun provideCalorieRepository(db: CalorieDatabase): CalorieRepository =
+        CalorieRepositoryImpl(db.dao)
+
 
     @Provides
     @Singleton
-    fun provideSettingsManager(app: Application): SettingsManager {
-        return SettingsManager(app)
-    }
+    fun provideSettingsManager(app: Application): SettingsManager =
+        SettingsManager(app)
+
 }
