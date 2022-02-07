@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.epam.caloriecalc.data.local.CalorieDatabase
 import com.epam.caloriecalc.data.local.repository.CalorieRepository
 import com.epam.caloriecalc.data.local.repository.CalorieRepositoryImpl
+import com.epam.caloriecalc.data.settings.SettingsManager
 import com.epam.caloriecalc.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -18,17 +19,22 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(app: Application): CalorieDatabase {
-        return Room.databaseBuilder(
+    fun provideDatabase(app: Application): CalorieDatabase =
+        Room.databaseBuilder(
             app,
             CalorieDatabase::class.java,
             Constants.CALORIE_DATABASE_NAME
         ).build()
-    }
 
     @Provides
     @Singleton
-    fun provideCalorieRepository(db: CalorieDatabase): CalorieRepository {
-        return CalorieRepositoryImpl(db.dao)
-    }
+    fun provideCalorieRepository(db: CalorieDatabase): CalorieRepository =
+        CalorieRepositoryImpl(db.dao)
+
+
+    @Provides
+    @Singleton
+    fun provideSettingsManager(app: Application): SettingsManager =
+        SettingsManager(app)
+
 }
