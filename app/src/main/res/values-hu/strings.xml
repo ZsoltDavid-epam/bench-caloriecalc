@@ -13,4 +13,6 @@
     <string name="screen_home">Kezdőlap</string>
     <string name="screen_history">Előzmények</string>
     <string name="screen_settings">Beállítások</string>
+    <string name="undo">Visszavonás</string>
+    <string name="addnewite_title">Új elem felvétele</string>
 </resources>

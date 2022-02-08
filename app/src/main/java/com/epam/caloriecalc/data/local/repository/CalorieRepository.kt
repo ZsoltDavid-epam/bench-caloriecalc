@@ -7,9 +7,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface CalorieRepository {
     suspend fun insertProduct(product: ProductRecord)
+
     suspend fun deleteProduct(product: ProductRecord)
 
     suspend fun insertIntake(intake: IntakeRecord)
+
     suspend fun deleteIntake(intake: IntakeRecord)
 
     fun getProductById(productId: Int): Flow<ProductRecord>

@@ -20,7 +20,8 @@ import com.epam.caloriecalc.ui.home.components.TodayStats
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    onAddPressed: () -> Unit
 ) {
     val intakeTodayStats by viewModel.intakesTodayStats.collectAsState()
 
@@ -33,7 +34,7 @@ fun HomeScreen(
             FloatingActionButton(
                 modifier = Modifier,
                 onClick = {
-                    /* Open the Add Screen */
+                    onAddPressed()
                 }
             ) {
                 Icon(
@@ -52,7 +53,7 @@ fun HomeScreen(
                 .fillMaxHeight(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
+        ) {
             TodayStats(modifier = Modifier.fillMaxWidth(0.5f), dailyStat = intakeTodayStats)
         }
     }
