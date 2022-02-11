@@ -17,4 +17,5 @@
     <string name="screen_additem" translatable="false">additem</string>
     <string name="addnewite_title">Add New Item</string>
     <string name="undo">Undo</string>
+    <string name="back">Back</string>
 </resources>

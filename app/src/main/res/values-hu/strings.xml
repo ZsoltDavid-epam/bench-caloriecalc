@@ -17,4 +17,5 @@
     <string name="undo">Visszavonás</string>
     <string name="snackbar_undo_message">%1$s törölve.</string>
     <string name="addnewite_title">Új elem felvétele</string>
+    <string name="back">Vissza</string>
 </resources>
