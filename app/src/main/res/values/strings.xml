@@ -12,6 +12,10 @@
     <string name="screen_home">Home</string>
     <string name="screen_history">History</string>
     <string name="screen_settings">Settings</string>
+    <string name="screen_additem" translatable="false">additem</string>
+    <string name="addnewite_title">Add New Item</string>
+    <string name="undo">Undo</string>
+    <string name="back">Back</string>
     <string name="appearance">Appearance</string>
     <string name="theme_device_default">Device default</string>
     <string name="theme_light">Light mode</string>

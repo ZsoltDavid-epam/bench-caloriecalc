@@ -18,21 +18,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewModelScope
 import com.epam.caloriecalc.R
-import com.epam.caloriecalc.data.local.entities.IntakeRecord
 import com.epam.caloriecalc.data.local.entities.ProductRecord
-import kotlinx.coroutines.launch
 
 @Composable
-fun AddItemCard(item: ProductRecord, onClickEvent : (id: Int) -> Unit) {
+fun AddItemCard(item: ProductRecord, onClickEvent: (id: Int) -> Unit) {
     Card(
         modifier = Modifier
             .padding(10.dp)
             .fillMaxWidth()
             .wrapContentHeight()
             .clickable {
-              onClickEvent(item.productId)
+                onClickEvent(item.productId)
             },
         shape = RoundedCornerShape(10.dp),
         elevation = 5.dp,

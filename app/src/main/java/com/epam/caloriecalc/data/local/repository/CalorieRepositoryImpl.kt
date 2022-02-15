@@ -25,6 +25,10 @@ class CalorieRepositoryImpl(
         return dao.deleteIntake(intake)
     }
 
+    override suspend fun getLastIntake(): IntakeRecord {
+      return dao.getLastIntake()
+    }
+
     override fun getProductById(productId: Int): Flow<ProductRecord> {
         return dao.getProductById(productId)
     }

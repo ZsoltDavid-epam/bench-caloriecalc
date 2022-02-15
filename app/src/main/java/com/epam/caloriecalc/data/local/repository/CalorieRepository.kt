@@ -14,6 +14,8 @@ interface CalorieRepository {
 
     suspend fun deleteIntake(intake: IntakeRecord)
 
+    suspend fun getLastIntake(): IntakeRecord
+
     fun getProductById(productId: Int): Flow<ProductRecord>
 
     fun getAllProductHistory(): Flow<List<ProductRecord>>

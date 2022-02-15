@@ -7,5 +7,5 @@ sealed class IntakeEvent {
     //data class OnDoneChange(val intake: IntakeRecord, val isDone: Boolean): IntakeEvent()
     data class OnDeleteClick(val intakeWithProduct: IntakeWithProduct): IntakeEvent()
     object OnUndoDeleteClick: IntakeEvent()
-    //object OnAddIntakeClick: CalorieEvent()
+    data class OnAddIntakeClick(val intakeWithProduct: IntakeWithProduct): IntakeEvent()
 }

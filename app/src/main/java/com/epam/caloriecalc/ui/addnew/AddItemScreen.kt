@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.epam.caloriecalc.R
 import com.epam.caloriecalc.data.local.entities.ProductRecord
+import com.epam.caloriecalc.util.AddItemEvent
 import com.epam.caloriecalc.util.UiEvent
 import kotlinx.coroutines.flow.collect
 
@@ -40,7 +41,7 @@ fun AddItemScreen(
                     )
 
                     if (result == SnackbarResult.ActionPerformed) {
-                        //TODO Undo
+                        viewModel.onEvent(AddItemEvent.OnUndoClick)
                     }
                 }
             }
@@ -74,7 +75,7 @@ fun AddItemScreen(
             }
             items(itemlist.sortedWith(compareBy { it.name })) { item ->
                 AddItemCard(item) {
-                    viewModel.repositoryInsertIntake(item)
+                    viewModel.onEvent(AddItemEvent.OnAddItemClick(item))
                 }
             }
         }

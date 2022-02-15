@@ -27,6 +27,9 @@ interface CalorieDao {
     @Query("SELECT * FROM product_table")
     fun getAllProductHistory(): Flow<List<ProductRecord>>
 
+    @Query("SELECT * FROM intake_table ORDER BY timestamp DESC LIMIT 1;")
+    suspend fun getLastIntake(): IntakeRecord
+
     @Transaction
     @Query("SELECT * FROM intake_table WHERE intakeId = :intakeId")
     fun getIntakeById(intakeId: Int): Flow<IntakeRecord>

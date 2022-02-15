@@ -54,6 +54,12 @@ class FakeCalorieRepository : CalorieRepository {
                     intakeId = 33
                 )
             )
+            add(
+                IntakeRecord(
+                    productId = 12,
+                    intakeId = 38
+                )
+            )
         }
 
         refreshFlow()
@@ -91,6 +97,10 @@ class FakeCalorieRepository : CalorieRepository {
     override suspend fun deleteIntake(intake: IntakeRecord) {
         intakeRecords.remove(intake)
         refreshFlow()
+    }
+
+    override suspend fun getLastIntake(): IntakeRecord {
+        return intakeRecords[intakeRecords.size]
     }
 
     override fun getProductById(productId: Int): Flow<ProductRecord> {
