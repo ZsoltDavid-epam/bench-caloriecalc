@@ -1,10 +1,7 @@
 package com.epam.caloriecalc.ui.home
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.FabPosition
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
@@ -20,7 +17,9 @@ import com.epam.caloriecalc.ui.home.components.TodayStats
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    onAddPressed: () -> Unit,
+    scaffoldState: ScaffoldState
 ) {
     val intakeTodayStats by viewModel.intakesTodayStats.collectAsState()
 
@@ -29,11 +28,12 @@ fun HomeScreen(
             .fillMaxSize()
             .offset(x = (-5).dp, y = (-65).dp)
             .padding(16.dp),
+        scaffoldState = scaffoldState,
         floatingActionButton = {
             FloatingActionButton(
                 modifier = Modifier,
                 onClick = {
-                    /* Open the Add Screen */
+                    onAddPressed()
                 }
             ) {
                 Icon(
@@ -52,7 +52,7 @@ fun HomeScreen(
                 .fillMaxHeight(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
+        ) {
             TodayStats(modifier = Modifier.fillMaxWidth(0.5f), dailyStat = intakeTodayStats)
         }
     }
