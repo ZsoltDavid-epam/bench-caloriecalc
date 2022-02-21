@@ -8,9 +8,7 @@ import com.epam.caloriecalc.util.AddItemEvent
 import com.epam.caloriecalc.util.SnackbarActionType
 import com.epam.caloriecalc.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,15 +20,16 @@ class AddItemViewModel @Inject constructor(
 
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
-
+    var rowId: Long? = null
     val productList = repository.getAllProductHistory()
 
     fun onEvent(event: AddItemEvent) {
-        var rowId : Long  = -1
+
         when (event) {
             is AddItemEvent.OnAddItemClick -> {
                 viewModelScope.launch {
-                    rowId = repository.insertIntake(IntakeRecord(productId = event.product.productId))
+                    rowId =
+                        repository.insertIntake(IntakeRecord(productId = event.product.productId))
                     sendUiEvent(
                         UiEvent.ShowSnackbar(
                             message = "Undo",
@@ -41,7 +40,7 @@ class AddItemViewModel @Inject constructor(
             }
             is AddItemEvent.OnUndoClick -> {
                 viewModelScope.launch {
-                    repository.deleteIntakeById(rowId)
+                    rowId?.let { repository.deleteIntakeById(it) }
                 }
             }
         }
