@@ -57,7 +57,7 @@ fun NavBarHost(
         }
 
         composable(route = NavBarScreenType.AddItem.route) {
-            AddItemScreen(itemlist = testitems)
+            AddItemScreen()
         }
     }
 

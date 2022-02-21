@@ -7,6 +7,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.epam.caloriecalc.R
-import com.epam.caloriecalc.data.local.entities.ProductRecord
 import com.epam.caloriecalc.util.AddItemEvent
 import com.epam.caloriecalc.util.UiEvent
 import kotlinx.coroutines.flow.collect
@@ -24,8 +25,9 @@ import kotlinx.coroutines.flow.collect
 @Composable
 fun AddItemScreen(
     viewModel: AddItemViewModel = hiltViewModel(),
-    itemlist: List<ProductRecord>
 ) {
+
+    val productList by viewModel.productList.collectAsState(initial = emptyList())
 
     val scaffoldState = rememberScaffoldState()
 
@@ -68,12 +70,12 @@ fun AddItemScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        stringResource(R.string.addnewite_title),
+                        stringResource(R.string.addnewitem_title),
                         style = MaterialTheme.typography.h6
                     )
                 }
             }
-            items(itemlist.sortedWith(compareBy { it.name })) { item ->
+            items(productList.sortedWith(compareBy { it.name })) { item ->
                 AddItemCard(item) {
                     viewModel.onEvent(AddItemEvent.OnAddItemClick(item))
                 }
