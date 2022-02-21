@@ -10,7 +10,6 @@ import com.epam.caloriecalc.data.local.entities.IntakeRecord
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.asExecutor
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
@@ -54,7 +53,7 @@ class AddItemViewModelTest {
 
     @Test
     fun testItemAdd() = runBlockingTest {
-        lateinit var  itemsAfterAdd: IntakeRecord
+        var itemsAfterAdd = IntakeRecord()
         testScope.launch {
             dao.insertIntake(IntakeRecord(intakeId = 34, productId = 12))
             itemsAfterAdd = dao.getLastIntake()

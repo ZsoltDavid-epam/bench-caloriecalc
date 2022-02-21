@@ -20,22 +20,17 @@ class AddItemViewModel @Inject constructor(
     internal val repository: CalorieRepository
 ) : ViewModel() {
 
-    init {
-        viewModelScope.launch {
-            for (item in testitems)
-                repository.insertProduct(item)
-        }
-    }
-
-    private lateinit var pendingItem: IntakeRecord
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
+    val productList = repository.getAllProductHistory()
+
     fun onEvent(event: AddItemEvent) {
+        var rowId : Long  = -1
         when (event) {
             is AddItemEvent.OnAddItemClick -> {
                 viewModelScope.launch {
-                    repository.insertIntake(IntakeRecord(productId = event.product.productId))
+                    rowId = repository.insertIntake(IntakeRecord(productId = event.product.productId))
                     sendUiEvent(
                         UiEvent.ShowSnackbar(
                             message = "Undo",
@@ -46,8 +41,7 @@ class AddItemViewModel @Inject constructor(
             }
             is AddItemEvent.OnUndoClick -> {
                 viewModelScope.launch {
-                    pendingItem = repository.getLastIntake()
-                    repository.deleteIntake(pendingItem)
+                    repository.deleteIntakeById(rowId)
                 }
             }
         }
