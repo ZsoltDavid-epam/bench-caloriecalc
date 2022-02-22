@@ -1,14 +1,17 @@
 package com.epam.caloriecalc.ui.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.epam.caloriecalc.data.local.relations.IntakeWithProduct
 import com.epam.caloriecalc.data.local.repository.CalorieRepository
 import com.epam.caloriecalc.data.model.DailyStat
 import com.epam.caloriecalc.data.settings.SettingsManager
+import com.epam.caloriecalc.ui.addnew.testitems
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.Instant
@@ -38,6 +41,10 @@ class HomeViewModel @Inject constructor(
             delay(1000L)
             intakesTodayStats.value = calculateTodayStats(intakesToday.stateIn(this).value)
             isLoading.value = false
+            if (repository.getAllProductHistory().first().isEmpty()){
+                for (item in testitems)
+                    repository.insertProduct(item)
+            }
         }
     }
 

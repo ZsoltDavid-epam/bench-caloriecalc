@@ -13,6 +13,9 @@
     <string name="screen_home">Kezdőlap</string>
     <string name="screen_history">Előzmények</string>
     <string name="screen_settings">Beállítások</string>
+    <string name="undo">Visszavonás</string>
+    <string name="addnewitem_title">Új elem felvétele</string>
+    <string name="back">Vissza</string>
     <string name="appearance">Kinézet</string>
     <string name="theme_device_default">Alapértelmezett</string>
     <string name="theme_light">Világos mód</string>

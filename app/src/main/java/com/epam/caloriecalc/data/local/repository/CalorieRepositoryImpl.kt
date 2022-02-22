@@ -17,12 +17,20 @@ class CalorieRepositoryImpl(
         return dao.deleteProduct(product)
     }
 
-    override suspend fun insertIntake(intake: IntakeRecord) {
+    override suspend fun insertIntake(intake: IntakeRecord) :Long {
         return dao.insertIntake(intake)
     }
 
     override suspend fun deleteIntake(intake: IntakeRecord) {
         return dao.deleteIntake(intake)
+    }
+
+    override suspend fun deleteIntakeById(id: Long) {
+        return dao.deleteIntakeById(id)
+    }
+
+    override suspend fun getLastIntake(): IntakeRecord {
+      return dao.getLastIntake()
     }
 
     override fun getProductById(productId: Int): Flow<ProductRecord> {

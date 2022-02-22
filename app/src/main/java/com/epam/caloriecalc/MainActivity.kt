@@ -5,18 +5,20 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
+import com.epam.caloriecalc.ui.core.DefaultSnackbar
 import com.epam.caloriecalc.ui.home.HomeViewModel
+import com.epam.caloriecalc.ui.navigation.AppToolbar
 import com.epam.caloriecalc.ui.navigation.NavBar
-import com.epam.caloriecalc.ui.navigation.NavBarGraph
+import com.epam.caloriecalc.ui.navigation.NavBarHost
+import com.epam.caloriecalc.ui.navigation.NavBarScreenType
 import com.epam.caloriecalc.ui.theme.CalorieCalcTheme
 import com.epam.caloriecalc.util.Constants.SETTINGS_THEME_DARK
 import com.epam.caloriecalc.util.Constants.SETTINGS_THEME_DEFAULT
@@ -43,27 +45,37 @@ class MainActivity : ComponentActivity() {
                 }
             ) {
                 val navController = rememberNavController()
+                val scaffoldState = rememberScaffoldState()
+                var canPop by remember { mutableStateOf(false) }
+
+                navController.addOnDestinationChangedListener { controller, _, _ ->
+                    canPop = controller.previousBackStackEntry != null
+                            && controller.currentBackStackEntry?.destination?.route != NavBarScreenType.Home.route
+                }
                 Surface(color = MaterialTheme.colors.background) {
                     Scaffold(
                         topBar = {
-                            TopAppBar(
-                                title = {
-                                    Text(stringResource(id = R.string.app_name))
-                                },
-                                navigationIcon = {
-                                    Icon(
-                                        painterResource(id = R.drawable.ic_calories),
-                                        contentDescription = stringResource(R.string.app_icon),
-                                        modifier = Modifier.fillMaxSize(0.75f)
-                                    )
+                            AppToolbar(
+                                canPop = canPop,
+                                navigateUp = {
+                                    navController.navigateUp()
                                 }
                             )
                         },
                         bottomBar = {
                             NavBar(navController = navController)
                         }
-                    ) {
-                        NavBarGraph(navController = navController)
+                    ) { innerPadding ->
+                        Box(modifier = Modifier.padding(innerPadding)) {
+                            NavBarHost(navController = navController, scaffoldState = scaffoldState)
+                            DefaultSnackbar(
+                                snackbarHostState = scaffoldState.snackbarHostState,
+                                onAction = {
+                                    scaffoldState.snackbarHostState.currentSnackbarData?.performAction()
+                                },
+                                modifier = Modifier.align(Alignment.BottomCenter)
+                            )
+                        }
                     }
                 }
             }
