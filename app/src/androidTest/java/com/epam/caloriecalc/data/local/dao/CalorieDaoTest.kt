@@ -8,7 +8,7 @@ import androidx.test.filters.SmallTest
 import com.epam.caloriecalc.data.local.CalorieDatabase
 import com.epam.caloriecalc.data.local.entities.IntakeRecord
 import com.epam.caloriecalc.data.local.entities.ProductRecord
-import com.epam.caloriecalc.data.local.relations.IntakeWithProduct
+import com.epam.caloriecalc.data.local.relations.ProductWithIntakes
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -32,7 +32,7 @@ class CalorieDaoTest {
     private lateinit var dao: CalorieDao
 
     private lateinit var testProduct: ProductRecord
-    private lateinit var testIntake: IntakeRecord
+    private lateinit var testIntake: List<IntakeRecord>
 
     @Before
     fun setup() {
@@ -53,10 +53,12 @@ class CalorieDaoTest {
             isFood = true
         )
 
-        testIntake = IntakeRecord(
-            productId = testProduct.productId,
-            intakeId = 33,
-            timestamp = now()
+        testIntake = listOf(
+            IntakeRecord(
+                productId = testProduct.productId,
+                intakeId = 33,
+                timestamp = now()
+            )
         )
     }
 
@@ -86,28 +88,28 @@ class CalorieDaoTest {
 
     @Test
     fun insertIntakeAfterProduct() = runBlockingTest {
-        val intakeWithProduct = IntakeWithProduct(testProduct, testIntake)
+        val intakesWithProduct = ProductWithIntakes(testProduct, testIntake)
 
         dao.insertProduct(testProduct)
-        dao.insertIntake(testIntake)
+        dao.insertIntake(testIntake.first())
 
         val allIntakes = dao.getAllIntakeHistory().first()
 
-        assertThat(allIntakes.contains(intakeWithProduct))
+        assertThat(allIntakes.contains(intakesWithProduct))
     }
 
     @Test
     fun deleteIntakeWithProduct() = runBlockingTest {
-        val intakeWithProduct = IntakeWithProduct(testProduct, testIntake)
+        val intakesWithProduct = ProductWithIntakes(testProduct, testIntake)
 
         dao.insertProduct(testProduct)
-        dao.insertIntake(testIntake)
+        dao.insertIntake(testIntake.first())
 
         dao.deleteProduct(testProduct)
 
         val allIntakes = dao.getAllIntakeHistory().first()
 
-        assertThat(allIntakes).doesNotContain(intakeWithProduct)
+        assertThat(allIntakes).doesNotContain(intakesWithProduct)
     }
 
     @Test
@@ -122,10 +124,10 @@ class CalorieDaoTest {
     @Test
     fun getIntakeById() = runBlockingTest {
         dao.insertProduct(testProduct)
-        dao.insertIntake(testIntake)
+        dao.insertIntake(testIntake.first())
 
-        val insertedIntake = dao.getIntakeById(testIntake.intakeId).first()
+        val insertedIntake = dao.getIntakeById(testIntake.first().intakeId).first()
 
-        assertThat(insertedIntake).isEqualTo(testIntake)
+        assertThat(insertedIntake).isEqualTo(testIntake.first())
     }
 }

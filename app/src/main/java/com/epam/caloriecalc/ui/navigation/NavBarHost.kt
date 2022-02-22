@@ -6,12 +6,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.epam.caloriecalc.ui.addnew.AddItemScreen
-import com.epam.caloriecalc.ui.addnew.testitems
 import androidx.navigation.navArgument
+import com.epam.caloriecalc.ui.addnew.AddItemScreen
 import com.epam.caloriecalc.ui.details.DetailScreen
 import com.epam.caloriecalc.ui.history.HistoryScreen
 import com.epam.caloriecalc.ui.home.HomeScreen
+import com.epam.caloriecalc.ui.settings.SettingsScreen
 
 @Composable
 fun NavBarHost(
@@ -34,11 +34,12 @@ fun NavBarHost(
             HistoryScreen(
                 onNavigate = {
                     navController.navigate(it.route)
-                }
+                },
+                scaffoldState = scaffoldState
             )
         }
         composable(route = NavBarScreenType.Settings.route) {
-            //SettingsScreen()
+            SettingsScreen()
         }
         composable(
             route = NavBarScreenType.Details.route + "?intakeId={intakeId}",

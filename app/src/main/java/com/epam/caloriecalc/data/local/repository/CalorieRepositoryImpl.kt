@@ -3,7 +3,7 @@ package com.epam.caloriecalc.data.local.repository
 import com.epam.caloriecalc.data.local.dao.CalorieDao
 import com.epam.caloriecalc.data.local.entities.IntakeRecord
 import com.epam.caloriecalc.data.local.entities.ProductRecord
-import com.epam.caloriecalc.data.local.relations.IntakeWithProduct
+import com.epam.caloriecalc.data.local.relations.ProductWithIntakes
 import kotlinx.coroutines.flow.Flow
 
 class CalorieRepositoryImpl(
@@ -17,7 +17,7 @@ class CalorieRepositoryImpl(
         return dao.deleteProduct(product)
     }
 
-    override suspend fun insertIntake(intake: IntakeRecord) :Long {
+    override suspend fun insertIntake(intake: IntakeRecord): Long {
         return dao.insertIntake(intake)
     }
 
@@ -30,7 +30,7 @@ class CalorieRepositoryImpl(
     }
 
     override suspend fun getLastIntake(): IntakeRecord {
-      return dao.getLastIntake()
+        return dao.getLastIntake()
     }
 
     override fun getProductById(productId: Int): Flow<ProductRecord> {
@@ -45,11 +45,14 @@ class CalorieRepositoryImpl(
         return dao.getIntakeById(intakeId)
     }
 
-    override fun getAllIntakeHistory(): Flow<List<IntakeWithProduct>> {
+    override fun getAllIntakeHistory(): Flow<List<ProductWithIntakes>> {
         return dao.getAllIntakeHistory()
     }
 
-    override fun getAllIntakeInDateInterval(start: Long, end: Long): Flow<List<IntakeWithProduct>> {
+    override fun getAllIntakeInDateInterval(
+        start: Long,
+        end: Long
+    ): Flow<List<ProductWithIntakes>> {
         return dao.getAllIntakeInDateInterval(start, end)
     }
 }

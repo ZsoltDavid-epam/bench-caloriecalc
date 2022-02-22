@@ -13,6 +13,7 @@
     <string name="screen_home">Kezdőlap</string>
     <string name="screen_history">Előzmények</string>
     <string name="screen_settings">Beállítások</string>
+    <string name="screen_additem">Új elem</string>
     <string name="undo">Visszavonás</string>
     <string name="addnewitem_title">Új elem felvétele</string>
     <string name="back">Vissza</string>
@@ -21,8 +22,7 @@
     <string name="theme_light">Világos mód</string>
     <string name="theme_dark">Sötét mód</string>
     <string name="details">Részletek</string>
-    <string name="undo">Visszavonás</string>
     <string name="snackbar_undo_message">%1$s törölve.</string>
-    <string name="addnewite_title">Új elem felvétele</string>
-    <string name="back">Vissza</string>
+    <string name="snackbar_delete_intake_message">%1$s bevitel sikeresen törölve.</string>
+    <string name="snackbar_item_added">%1$s bevitel hozzáadva.</string>
 </resources>

@@ -2,7 +2,7 @@ package com.epam.caloriecalc.data.local.repository
 
 import com.epam.caloriecalc.data.local.entities.IntakeRecord
 import com.epam.caloriecalc.data.local.entities.ProductRecord
-import com.epam.caloriecalc.data.local.relations.IntakeWithProduct
+import com.epam.caloriecalc.data.local.relations.ProductWithIntakes
 import kotlinx.coroutines.flow.Flow
 
 interface CalorieRepository {
@@ -10,11 +10,11 @@ interface CalorieRepository {
 
     suspend fun deleteProduct(product: ProductRecord)
 
-    suspend fun insertIntake(intake: IntakeRecord) : Long
+    suspend fun insertIntake(intake: IntakeRecord): Long
 
     suspend fun deleteIntake(intake: IntakeRecord)
 
-    suspend fun deleteIntakeById(id : Long)
+    suspend fun deleteIntakeById(id: Long)
 
     suspend fun getLastIntake(): IntakeRecord
 
@@ -24,7 +24,7 @@ interface CalorieRepository {
 
     fun getIntakeById(intakeId: Int): Flow<IntakeRecord>
 
-    fun getAllIntakeHistory(): Flow<List<IntakeWithProduct>>
+    fun getAllIntakeHistory(): Flow<List<ProductWithIntakes>>
 
-    fun getAllIntakeInDateInterval(start: Long, end: Long): Flow<List<IntakeWithProduct>>
+    fun getAllIntakeInDateInterval(start: Long, end: Long): Flow<List<ProductWithIntakes>>
 }
