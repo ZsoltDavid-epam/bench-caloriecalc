@@ -133,6 +133,7 @@ fun CalorieItemCard(
                                         else it
                                     }
                                 }",
+                        color = Color.Black,
                         modifier = Modifier.padding(top = 12.dp, end = 8.dp)
                     )
                 }

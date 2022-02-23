@@ -25,9 +25,9 @@ fun DateDivider(
     ) {
         Text(
             text = date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)),
-            color = Color.White,
+            color = MaterialTheme.colors.onSurface,
             modifier = Modifier
-                .background(color = MaterialTheme.colors.onBackground)
+                .background(color = MaterialTheme.colors.primaryVariant)
                 .padding(8.dp)
                 .fillMaxWidth()
         )
