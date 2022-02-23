@@ -101,7 +101,12 @@ fun CalorieItemCard(
                             onDeleteClick()
                         },
                     ) {
-                        Icon(imageVector = Icons.Default.Close, contentDescription = "Delete")
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Delete",
+                            tint = if (MaterialTheme.colors.isLight) MaterialTheme.colors.onBackground
+                            else MaterialTheme.colors.onPrimary
+                        )
                     }
                 }
             }
