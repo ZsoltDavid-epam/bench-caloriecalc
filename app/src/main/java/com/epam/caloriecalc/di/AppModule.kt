@@ -52,5 +52,4 @@ object AppModule {
     @Singleton
     fun provideApi(retrofit: Retrofit) =
         retrofit.create(FakeApi::class.java)
-
 }

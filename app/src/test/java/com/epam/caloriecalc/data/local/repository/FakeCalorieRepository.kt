@@ -135,7 +135,6 @@ class FakeCalorieRepository : CalorieRepository {
         intakeRecords.remove(intakeRecords.first { it.intakeId == id.toInt() })
         refreshFlow()
     }
-
     override suspend fun getLastIntake(): IntakeRecord {
         return intakeRecords[intakeRecords.size]
     }
