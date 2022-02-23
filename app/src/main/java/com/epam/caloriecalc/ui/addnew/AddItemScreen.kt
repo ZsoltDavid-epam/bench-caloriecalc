@@ -1,10 +1,20 @@
 package com.epam.caloriecalc.ui.addnew
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarResult
+import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -17,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.epam.caloriecalc.R
+import com.epam.caloriecalc.ui.core.CalorieItemCard
 import com.epam.caloriecalc.util.AddItemEvent
 import com.epam.caloriecalc.util.UiEvent
 import kotlinx.coroutines.flow.collect
@@ -38,14 +49,14 @@ fun AddItemScreen(
             when (event) {
                 is UiEvent.ShowSnackbar -> {
                     val result = scaffoldState.snackbarHostState.showSnackbar(
-                        message = event.message,
+                        message = context.getString(event.messageId, event.itemName),
                         actionLabel = context.getString(event.action.actionResId)
                     )
-
                     if (result == SnackbarResult.ActionPerformed) {
                         viewModel.onEvent(AddItemEvent.OnUndoClick)
                     }
                 }
+                is UiEvent.Navigate -> {}
             }
         }
 
@@ -76,9 +87,10 @@ fun AddItemScreen(
                 }
             }
             items(productList.sortedWith(compareBy { it.name })) { item ->
-                AddItemCard(item) {
-                    viewModel.onEvent(AddItemEvent.OnAddItemClick(item))
-                }
+                CalorieItemCard(
+                    product = item,
+                    onClickEvent = { viewModel.onEvent(AddItemEvent.OnAddItemClick(item)) }
+                )
             }
         }
     }

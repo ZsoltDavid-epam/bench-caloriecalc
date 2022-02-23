@@ -16,11 +16,12 @@ import com.epam.caloriecalc.R
 @Composable
 fun AppToolbar(
     canPop: Boolean,
-    navigateUp: () -> Unit
+    navigateUp: () -> Unit,
+    titleResId: Int
 ) {
     TopAppBar(
         title = {
-            Text(stringResource(id = R.string.app_name))
+            Text(stringResource(id = titleResId))
         },
         navigationIcon = if (canPop) {
             {

@@ -1,12 +1,20 @@
 package com.epam.caloriecalc.ui.home
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,7 +29,7 @@ fun HomeScreen(
     onAddPressed: () -> Unit,
     scaffoldState: ScaffoldState
 ) {
-    val intakeTodayStats by viewModel.intakesTodayStats.collectAsState()
+    val intakeTodayStats = viewModel.intakesTodayStats
 
     Scaffold(
         modifier = Modifier
@@ -43,7 +51,6 @@ fun HomeScreen(
             }
         },
         floatingActionButtonPosition = FabPosition.End
-
     ) {
 
         Column(

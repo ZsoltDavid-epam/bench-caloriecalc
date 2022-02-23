@@ -1,9 +1,14 @@
 package com.epam.caloriecalc.data.local.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Transaction
 import com.epam.caloriecalc.data.local.entities.IntakeRecord
 import com.epam.caloriecalc.data.local.entities.ProductRecord
-import com.epam.caloriecalc.data.local.relations.IntakeWithProduct
+import com.epam.caloriecalc.data.local.relations.ProductWithIntakes
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -36,11 +41,11 @@ interface CalorieDao {
 
     @Transaction
     @Query("SELECT * FROM product_table")
-    fun getAllIntakeHistory(): Flow<List<IntakeWithProduct>>
+    fun getAllIntakeHistory(): Flow<List<ProductWithIntakes>>
 
     @Transaction
     @Query("SELECT * FROM product_table WHERE productId IN (SELECT productId FROM intake_table WHERE timestamp BETWEEN :start AND :end)")
-    fun getAllIntakeInDateInterval(start: Long, end: Long): Flow<List<IntakeWithProduct>>
+    fun getAllIntakeInDateInterval(start: Long, end: Long): Flow<List<ProductWithIntakes>>
 
     @Query("DELETE FROM intake_table WHERE intakeId = :id")
     suspend fun deleteIntakeById(id: Long)

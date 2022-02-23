@@ -7,8 +7,15 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -35,7 +42,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val darkTheme by homeViewModel.themeMode.collectAsState(initial = SETTINGS_THEME_DEFAULT)
             val splashScreen = installSplashScreen()
-            splashScreen.setKeepOnScreenCondition { homeViewModel.isLoading.value }
+            splashScreen.setKeepOnScreenCondition { homeViewModel.isLoading }
 
             CalorieCalcTheme(
                 darkTheme = when (darkTheme) {
@@ -47,10 +54,23 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val scaffoldState = rememberScaffoldState()
                 var canPop by remember { mutableStateOf(false) }
+                var currentTitleResId by remember { mutableStateOf(R.string.app_name) }
 
                 navController.addOnDestinationChangedListener { controller, _, _ ->
                     canPop = controller.previousBackStackEntry != null
                             && controller.currentBackStackEntry?.destination?.route != NavBarScreenType.Home.route
+
+                    currentTitleResId =
+                        when (controller.currentBackStackEntry?.destination?.route?.substringBefore(
+                            '?'
+                        )) {
+                            NavBarScreenType.Home.route -> NavBarScreenType.Home.titleResId
+                            NavBarScreenType.AddItem.route -> NavBarScreenType.AddItem.titleResId
+                            NavBarScreenType.History.route -> NavBarScreenType.History.titleResId
+                            NavBarScreenType.Details.route -> NavBarScreenType.Details.titleResId
+                            NavBarScreenType.Settings.route -> NavBarScreenType.Settings.titleResId
+                            else -> { R.string.app_name }
+                        }
                 }
                 Surface(color = MaterialTheme.colors.background) {
                     Scaffold(
@@ -59,7 +79,8 @@ class MainActivity : ComponentActivity() {
                                 canPop = canPop,
                                 navigateUp = {
                                     navController.navigateUp()
-                                }
+                                },
+                                titleResId = currentTitleResId
                             )
                         },
                         bottomBar = {
