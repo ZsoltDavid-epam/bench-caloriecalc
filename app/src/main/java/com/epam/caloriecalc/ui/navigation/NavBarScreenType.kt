@@ -34,7 +34,6 @@ sealed class NavBarScreenType(
         titleResId = R.string.details,
         icon = Icons.Default.Description
     )
-
     object AddItem : NavBarScreenType(
         route = "additem",
         titleResId = R.string.screen_additem,

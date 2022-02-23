@@ -59,6 +59,7 @@ class MainActivity : ComponentActivity() {
                 navController.addOnDestinationChangedListener { controller, _, _ ->
                     canPop = controller.previousBackStackEntry != null
                             && controller.currentBackStackEntry?.destination?.route != NavBarScreenType.Home.route
+
                     currentTitleResId =
                         when (controller.currentBackStackEntry?.destination?.route?.substringBefore(
                             '?'

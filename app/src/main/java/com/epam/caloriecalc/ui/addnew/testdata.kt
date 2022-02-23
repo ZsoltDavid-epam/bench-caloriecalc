@@ -80,7 +80,7 @@ val testitems = listOf(
         calories = 89.4f,
         totalFat = 0.3f,
         protein = 1.1f,
-        carbohydrates = 23.2f,
+        carbohydrates = 23.2
         isFood = true,
         imagePath = ""
     ),
