@@ -21,13 +21,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.epam.caloriecalc.R
+import com.epam.caloriecalc.ui.destinations.AddItemScreenDestination
 import com.epam.caloriecalc.ui.home.components.TodayStats
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@Destination(
+    start = true
+)
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    onAddPressed: () -> Unit,
-    scaffoldState: ScaffoldState
+    scaffoldState: ScaffoldState,
+    navigator: DestinationsNavigator
 ) {
     val intakeTodayStats = viewModel.intakesTodayStats
 
@@ -41,7 +47,7 @@ fun HomeScreen(
             FloatingActionButton(
                 modifier = Modifier,
                 onClick = {
-                    onAddPressed()
+                    navigator.navigate(AddItemScreenDestination())
                 }
             ) {
                 Icon(

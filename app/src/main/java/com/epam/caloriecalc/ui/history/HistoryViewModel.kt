@@ -8,20 +8,16 @@ import com.epam.caloriecalc.data.local.entities.IntakeRecord
 import com.epam.caloriecalc.data.local.relations.ProductWithIntakes
 import com.epam.caloriecalc.data.local.repository.CalorieRepository
 import com.epam.caloriecalc.data.remote.FakeApi
-import com.epam.caloriecalc.ui.navigation.NavBarScreenType
 import com.epam.caloriecalc.util.HistoryEvent
 import com.epam.caloriecalc.util.SnackbarActionType
 import com.epam.caloriecalc.util.UiEvent
 import com.epam.caloriecalc.util.toLocalDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.time.Instant
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -68,14 +64,6 @@ class HistoryViewModel @Inject constructor(
 
     fun onEvent(event: HistoryEvent) {
         when (event) {
-            is HistoryEvent.OnDetailsClick -> {
-                sendUiEvent(
-                    UiEvent.Navigate(
-                        NavBarScreenType.Details.route +
-                                "?intakeId=${event.productIntake.intake.intakeId}"
-                    )
-                )
-            }
             is HistoryEvent.OnDeleteClick -> {
                 viewModelScope.launch {
                     deletedIntake = event.productIntake.intake
@@ -115,38 +103,4 @@ class HistoryViewModel @Inject constructor(
         }
     }
 
-    fun insertDemoIntakes() {
-        viewModelScope.launch {
-            delay(1000)
-            repository.insertIntake(
-                IntakeRecord(
-                    productId = 4,
-                    intakeId = 33
-                )
-            )
-            repository.insertIntake(
-                IntakeRecord(
-                    productId = 3,
-                    intakeId = 35,
-                    timestamp = Instant.now().minus(20, ChronoUnit.DAYS)
-                )
-            )
-            repository.insertIntake(
-                IntakeRecord(
-                    productId = 2,
-                    intakeId = 36,
-                    timestamp = Instant.now().minus(20, ChronoUnit.DAYS)
-                        .minus(1, ChronoUnit.MINUTES)
-                )
-            )
-            repository.insertIntake(
-                IntakeRecord(
-                    productId = 3,
-                    intakeId = 34,
-                    timestamp = Instant.now().minus(20, ChronoUnit.MINUTES)
-                )
-            )
-
-        }
-    }
 }

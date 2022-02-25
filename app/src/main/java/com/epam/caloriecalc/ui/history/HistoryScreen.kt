@@ -2,11 +2,8 @@ package com.epam.caloriecalc.ui.history
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.SnackbarResult
@@ -14,22 +11,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.epam.caloriecalc.data.model.ProductIntake
 import com.epam.caloriecalc.ui.core.CalorieItemCard
+import com.epam.caloriecalc.ui.destinations.DetailScreenDestination
 import com.epam.caloriecalc.ui.history.components.DateDivider
 import com.epam.caloriecalc.util.HistoryEvent
 import com.epam.caloriecalc.util.UiEvent
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.collect
 
 @OptIn(ExperimentalFoundationApi::class, androidx.compose.animation.ExperimentalAnimationApi::class)
+@Destination
 @Composable
 fun HistoryScreen(
     viewModel: HistoryViewModel = hiltViewModel(),
-    onNavigate: (UiEvent.Navigate) -> Unit,
+    navigator: DestinationsNavigator,
     scaffoldState: ScaffoldState
 ) {
     val intakeHistory by viewModel.intakeHistory.collectAsState(initial = emptyList())
@@ -39,9 +39,6 @@ fun HistoryScreen(
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
             when (event) {
-                is UiEvent.Navigate -> {
-                    onNavigate(event)
-                }
                 is UiEvent.ShowSnackbar -> {
                     val result = scaffoldState.snackbarHostState.showSnackbar(
                         message = context.getString(event.messageId, event.itemName),
@@ -59,21 +56,6 @@ fun HistoryScreen(
     Scaffold(
         scaffoldState = scaffoldState,
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
-        ) {
-
-            AnimatedVisibility(visible = intakeHistory.isEmpty()) {
-                CircularProgressIndicator()
-            }
-
-            LaunchedEffect(key1 = intakeHistory.isEmpty()) {
-                viewModel.insertDemoIntakes()
-            }
-        }
-
         AnimatedVisibility(visible = intakeHistory.isNotEmpty()) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
@@ -104,13 +86,12 @@ fun HistoryScreen(
                                     product = productIntake.product,
                                     intake = productIntake.intake,
                                     onClickEvent = {
-                                        viewModel.onEvent(
-                                            HistoryEvent.OnDetailsClick(
-                                                ProductIntake(
-                                                    productIntake.product,
-                                                    productIntake.intake
-                                                )
-                                            )
+                                        navigator.navigate(
+                                            DetailScreenDestination(
+                                                productIntake.product,
+                                                productIntake.intake
+                                            ),
+                                            onlyIfResumed = true
                                         )
                                     },
                                     onDeleteClick = {

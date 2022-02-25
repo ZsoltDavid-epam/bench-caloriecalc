@@ -1,60 +1,39 @@
 package com.epam.caloriecalc.ui.navigation
 
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.epam.caloriecalc.ui.navDestination
+import com.ramcosta.composedestinations.navigation.navigateTo
 
 @Composable
 fun NavBar(
-    navController: NavHostController
+    navController: NavController
 ) {
-    val screens = listOf(
-        NavBarScreenType.Home,
-        NavBarScreenType.History,
-        NavBarScreenType.Settings
-    )
-
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
+    val currentDestination = navController.currentBackStackEntryAsState()
+        .value?.navDestination
 
     BottomNavigation {
-        screens.forEach { screen ->
-            AddItem(
-                screenType = screen,
-                currentDestination = currentDestination,
-                navController = navController
+        NavBarDestination.values().forEach { destination ->
+            BottomNavigationItem(
+                selected = currentDestination == destination.direction,
+                onClick = {
+                    navController.navigateTo(destination.direction) {
+                        launchSingleTop = true
+                    }
+                },
+                icon = {
+                    Icon(destination.icon, contentDescription = stringResource(destination.label))
+                },
+                label = {
+                    Text(stringResource(destination.label))
+                }
             )
         }
     }
-}
-
-@Composable
-fun RowScope.AddItem(
-    screenType: NavBarScreenType,
-    currentDestination: NavDestination?,
-    navController: NavHostController
-) {
-    BottomNavigationItem(
-        label = {
-            Text(text = stringResource(id = screenType.titleResId))
-        },
-        icon = {
-            Icon(imageVector = screenType.icon, contentDescription = "${stringResource(id = screenType.titleResId)} Navigation Icon")
-        },
-        selected = currentDestination?.hierarchy?.any {
-            it.route == screenType.route
-        } == true,
-        onClick = {
-            navController.navigate(screenType.route)
-        }
-    )
 }

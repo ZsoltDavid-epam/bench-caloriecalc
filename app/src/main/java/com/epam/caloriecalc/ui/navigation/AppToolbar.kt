@@ -17,11 +17,14 @@ import com.epam.caloriecalc.R
 fun AppToolbar(
     canPop: Boolean,
     navigateUp: () -> Unit,
-    titleResId: Int
+    titleResId: Int,
+    title: String? = null
 ) {
     TopAppBar(
         title = {
-            Text(stringResource(id = titleResId))
+            Text(
+                text = title ?: stringResource(id = titleResId)
+            )
         },
         navigationIcon = if (canPop) {
             {

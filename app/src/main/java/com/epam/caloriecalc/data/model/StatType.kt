@@ -7,4 +7,6 @@ sealed class StatType(val nameResId: Int, val unitResId: Int) {
     object Carbs : StatType(R.string.carbs, R.string.unit_g)
     object Fat : StatType(R.string.fat, R.string.unit_g)
     object Protein: StatType(R.string.protein, R.string.unit_g)
+    object Amount: StatType(R.string.amount, R.string.unit_g)
+    object TimeAdded: StatType(R.string.time_added, R.string.unit_time)
 }

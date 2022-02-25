@@ -1,5 +1,6 @@
 package com.epam.caloriecalc.data.local.entities
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -7,6 +8,7 @@ import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 import com.epam.caloriecalc.util.Constants.INTAKE_TABLE_NAME
 import com.epam.caloriecalc.util.Constants.PRODUCT_ID_COLUMN_NAME
+import kotlinx.parcelize.Parcelize
 import java.time.Instant
 import java.time.Instant.now
 
@@ -20,6 +22,7 @@ import java.time.Instant.now
         onUpdate = CASCADE
     )]
 )
+@Parcelize
 data class IntakeRecord(
     @PrimaryKey(autoGenerate = true)
     val intakeId: Int = 0,
@@ -27,5 +30,5 @@ data class IntakeRecord(
     val productId: Int = 0,
     val timestamp: Instant = now(),
     val amount: Int = 100
-)
+): Parcelable
 

@@ -9,6 +9,7 @@ import com.epam.caloriecalc.data.local.relations.ProductWithIntakes
 import com.epam.caloriecalc.data.local.repository.CalorieRepository
 import com.epam.caloriecalc.data.model.DailyStat
 import com.epam.caloriecalc.data.settings.SettingsManager
+import com.epam.caloriecalc.ui.addnew.testIntakes
 import com.epam.caloriecalc.ui.addnew.testitems
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -47,6 +48,8 @@ class HomeViewModel @Inject constructor(
             if (repository.getAllProductHistory().first().isEmpty()) {
                 for (item in testitems)
                     repository.insertProduct(item)
+                for(item in testIntakes)
+                    repository.insertIntake(item)
             }
         }
     }
