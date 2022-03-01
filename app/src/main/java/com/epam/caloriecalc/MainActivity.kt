@@ -19,17 +19,29 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.epam.caloriecalc.ui.NavGraphs
+import com.epam.caloriecalc.ui.addnew.AddItemScreen
 import com.epam.caloriecalc.ui.core.DefaultSnackbar
+import com.epam.caloriecalc.ui.destinations.AddItemScreenDestination
+import com.epam.caloriecalc.ui.destinations.DetailScreenDestination
+import com.epam.caloriecalc.ui.destinations.HistoryScreenDestination
+import com.epam.caloriecalc.ui.destinations.HomeScreenDestination
+import com.epam.caloriecalc.ui.history.HistoryScreen
+import com.epam.caloriecalc.ui.home.HomeScreen
 import com.epam.caloriecalc.ui.home.HomeViewModel
+import com.epam.caloriecalc.ui.navDestination
 import com.epam.caloriecalc.ui.navigation.AppToolbar
 import com.epam.caloriecalc.ui.navigation.NavBar
-import com.epam.caloriecalc.ui.navigation.NavBarHost
-import com.epam.caloriecalc.ui.navigation.NavBarScreenType
+import com.epam.caloriecalc.ui.navigation.NavBarDestination
 import com.epam.caloriecalc.ui.theme.CalorieCalcTheme
 import com.epam.caloriecalc.util.Constants.SETTINGS_THEME_DARK
 import com.epam.caloriecalc.util.Constants.SETTINGS_THEME_DEFAULT
 import com.epam.caloriecalc.util.Constants.SETTINGS_THEME_LIGHT
+import com.epam.caloriecalc.util.title
+import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.manualcomposablecalls.composable
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,41 +66,72 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val scaffoldState = rememberScaffoldState()
                 var canPop by remember { mutableStateOf(false) }
-                var currentTitleResId by remember { mutableStateOf(R.string.app_name) }
+
+                val currentDestination = navController.currentBackStackEntryAsState()
+                    .value?.navDestination
 
                 navController.addOnDestinationChangedListener { controller, _, _ ->
                     canPop = controller.previousBackStackEntry != null
-                            && controller.currentBackStackEntry?.destination?.route != NavBarScreenType.Home.route
-
-                    currentTitleResId =
-                        when (controller.currentBackStackEntry?.destination?.route?.substringBefore(
-                            '?'
-                        )) {
-                            NavBarScreenType.Home.route -> NavBarScreenType.Home.titleResId
-                            NavBarScreenType.AddItem.route -> NavBarScreenType.AddItem.titleResId
-                            NavBarScreenType.History.route -> NavBarScreenType.History.titleResId
-                            NavBarScreenType.Details.route -> NavBarScreenType.Details.titleResId
-                            NavBarScreenType.Settings.route -> NavBarScreenType.Settings.titleResId
-                            else -> { R.string.app_name }
-                        }
+                            && controller.currentBackStackEntry?.destination?.route != NavBarDestination.Home.direction.route
                 }
                 Surface(color = MaterialTheme.colors.background) {
                     Scaffold(
                         topBar = {
-                            AppToolbar(
-                                canPop = canPop,
-                                navigateUp = {
-                                    navController.navigateUp()
-                                },
-                                titleResId = currentTitleResId
-                            )
+                            currentDestination?.title?.let {
+                                var details = ""
+                                if (currentDestination == DetailScreenDestination) {
+                                    navController.currentBackStackEntry?.let { entry ->
+                                        val arg = DetailScreenDestination.argsFrom(
+                                            entry
+                                        )
+                                        details = arg.product.name
+                                    }
+                                }
+                                AppToolbar(
+                                    canPop = canPop,
+                                    navigateUp = {
+                                        navController.navigateUp()
+                                    },
+                                    titleResId = it,
+                                    title = if (currentDestination == DetailScreenDestination) {
+                                        navController.currentBackStackEntry?.let { entry ->
+                                            val argument = DetailScreenDestination.argsFrom(
+                                                entry
+                                            )
+                                            argument.product.name
+                                        }
+                                    } else null
+                                )
+                            }
                         },
                         bottomBar = {
-                            NavBar(navController = navController)
+                            NavBar(navController)
                         }
                     ) { innerPadding ->
                         Box(modifier = Modifier.padding(innerPadding)) {
-                            NavBarHost(navController = navController, scaffoldState = scaffoldState)
+
+                            DestinationsNavHost(
+                                navGraph = NavGraphs.root,
+                                navController = navController
+                            ) {
+                                composable(HomeScreenDestination) {
+                                    HomeScreen(
+                                        scaffoldState = scaffoldState,
+                                        navigator = destinationsNavigator
+                                    )
+                                }
+                                composable(HistoryScreenDestination) {
+                                    HistoryScreen(
+                                        scaffoldState = scaffoldState,
+                                        navigator = destinationsNavigator
+                                    )
+                                }
+                                composable(AddItemScreenDestination) {
+                                    AddItemScreen(
+                                        scaffoldState = scaffoldState
+                                    )
+                                }
+                            }
                             DefaultSnackbar(
                                 snackbarHostState = scaffoldState.snackbarHostState,
                                 onAction = {

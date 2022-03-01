@@ -12,9 +12,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -30,17 +30,17 @@ import com.epam.caloriecalc.R
 import com.epam.caloriecalc.ui.core.CalorieItemCard
 import com.epam.caloriecalc.util.AddItemEvent
 import com.epam.caloriecalc.util.UiEvent
+import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.flow.collect
 
-
+@Destination
 @Composable
 fun AddItemScreen(
     viewModel: AddItemViewModel = hiltViewModel(),
+    scaffoldState: ScaffoldState
 ) {
 
     val productList by viewModel.productList.collectAsState(initial = emptyList())
-
-    val scaffoldState = rememberScaffoldState()
 
     val context = LocalContext.current
 
@@ -56,7 +56,6 @@ fun AddItemScreen(
                         viewModel.onEvent(AddItemEvent.OnUndoClick)
                     }
                 }
-                is UiEvent.Navigate -> {}
             }
         }
 

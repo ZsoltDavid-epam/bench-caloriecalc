@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import com.epam.caloriecalc.R
 import com.epam.caloriecalc.data.local.entities.IntakeRecord
 import com.epam.caloriecalc.data.local.entities.ProductRecord
-import com.epam.caloriecalc.util.toLocalDateTime
+import com.epam.caloriecalc.util.toPatternString
 
 @Composable
 fun CalorieItemCard(
@@ -131,13 +131,7 @@ fun CalorieItemCard(
 
                     }
                     Text(
-                        text = "${intake?.timestamp?.toLocalDateTime()?.hour}:" +
-                                "${
-                                    intake?.timestamp?.toLocalDateTime()?.minute?.let {
-                                        if (it < 10) "0$it"
-                                        else it
-                                    }
-                                }",
+                        text = intake?.timestamp?.toPatternString("HH:mm") ?: "",
                         color = Color.Black,
                         modifier = Modifier.padding(top = 12.dp, end = 8.dp)
                     )

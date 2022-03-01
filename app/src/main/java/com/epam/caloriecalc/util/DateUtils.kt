@@ -2,17 +2,12 @@ package com.epam.caloriecalc.util
 
 import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
-fun Instant.toLocalDate() : LocalDate {
-    val zonedDateTime = this.atZone(ZoneId.systemDefault())
+fun Instant.toLocalDate(): LocalDate =
+    this.atZone(ZoneId.systemDefault()).toLocalDate()
 
-    return zonedDateTime.toLocalDate()
-}
-
-fun Instant.toLocalDateTime() : LocalDateTime {
-    val zonedDateTime = this.atZone(ZoneId.systemDefault())
-
-    return zonedDateTime.toLocalDateTime()
-}
+fun Instant.toPatternString(pattern: String): String =
+    DateTimeFormatter.ofPattern(pattern).withZone(ZoneId.systemDefault())
+        .format(this)

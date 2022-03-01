@@ -6,6 +6,8 @@
     <string name="carbs">Szénhidrátok</string>
     <string name="fat">Zsír</string>
     <string name="protein">Fehérje</string>
+    <string name="amount">Mennyiség</string>
+    <string name="time_added">Hozzáadva</string>
     <string name="unit_kcal">kcal</string>
     <string name="unit_g">g</string>
     <string name="add">Hozzáadás</string>

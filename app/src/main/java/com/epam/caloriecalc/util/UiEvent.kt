@@ -3,7 +3,6 @@ package com.epam.caloriecalc.util
 import com.epam.caloriecalc.R
 
 sealed class UiEvent {
-    data class Navigate(val route: String) : UiEvent()
     data class ShowSnackbar(
         val messageId: Int,
         val itemName: String? = null,

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,11 +29,14 @@ import com.epam.caloriecalc.ui.theme.Typography
 import com.epam.caloriecalc.util.Constants.SETTINGS_THEME_DARK
 import com.epam.caloriecalc.util.Constants.SETTINGS_THEME_DEFAULT
 import com.epam.caloriecalc.util.Constants.SETTINGS_THEME_LIGHT
+import com.ramcosta.composedestinations.annotation.Destination
 
+@Destination
 @Composable
 fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
+    val themeState by viewModel.themeState.collectAsState()
 
     val themeItems =
         listOf(
@@ -68,7 +72,7 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.width(8.dp))
             DropdownMenuBox(
                 items = themeItems,
-                savedIndex = viewModel.themeState.value,
+                savedIndex = themeState,
                 onClick = { selectedIndex = it })
         }
     }

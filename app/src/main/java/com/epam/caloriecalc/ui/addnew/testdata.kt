@@ -2,6 +2,8 @@ package com.epam.caloriecalc.ui.addnew
 
 import com.epam.caloriecalc.data.local.entities.IntakeRecord
 import com.epam.caloriecalc.data.local.entities.ProductRecord
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 val testitems = listOf(
     ProductRecord(
@@ -166,7 +168,11 @@ val testIntakes = listOf(
         intakeId = 2,
         productId = 12,
         amount = 3
+    ),
+    IntakeRecord(
+        intakeId = 3,
+        productId = 4,
+        timestamp = Instant.now().minus(20, ChronoUnit.DAYS)
+            .minus(24, ChronoUnit.MINUTES)
     )
-
-
 )
