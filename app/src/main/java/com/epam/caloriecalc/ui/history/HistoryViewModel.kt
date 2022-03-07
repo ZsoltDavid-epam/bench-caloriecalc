@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.epam.caloriecalc.R
-import com.epam.caloriecalc.data.local.entities.IntakeRecord
 import com.epam.caloriecalc.data.local.relations.ProductWithIntakes
 import com.epam.caloriecalc.data.local.repository.CalorieRepository
+import com.epam.caloriecalc.data.model.ProductIntake
 import com.epam.caloriecalc.data.remote.FakeApi
 import com.epam.caloriecalc.util.HistoryEvent
 import com.epam.caloriecalc.util.SnackbarActionType
@@ -60,14 +60,13 @@ class HistoryViewModel @Inject constructor(
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    private var deletedIntake: IntakeRecord? = null
+    private var deletedIntake: ProductIntake? = null
 
     fun onEvent(event: HistoryEvent) {
         when (event) {
             is HistoryEvent.OnDeleteClick -> {
                 viewModelScope.launch {
-                    deletedIntake = event.productIntake.intake
-                    repository.deleteIntake(event.productIntake.intake)
+                    deletedIntake = event.productIntake
                     sendUiEvent(
                         UiEvent.ShowSnackbar(
                             messageId = R.string.snackbar_delete_intake_message,
@@ -75,21 +74,24 @@ class HistoryViewModel @Inject constructor(
                             action = SnackbarActionType.Undo
                         )
                     )
-                    try {
-                        fakeApi.postRemoveIntake(event.productIntake.intake.intakeId.toLong())
-                    } catch (e: Exception) {
-                        Log.d(FakeApi.TAG_FAKE_API, FakeApi.LOG_REMOVE_INTAKE_FAILED)
-                    }
                 }
             }
             is HistoryEvent.OnUndoDeleteClick -> {
-                deletedIntake?.let { intake ->
+                deletedIntake?.let {
+                    sendUiEvent(
+                        UiEvent.RestoreDeleted(it.intake)
+                    )
+                }
+            }
+            is HistoryEvent.DeleteFinal -> {
+                deletedIntake?.let {
                     viewModelScope.launch {
-                        repository.insertIntake(intake)
+                        repository.deleteIntake(it.intake)
+
                         try {
-                            fakeApi.postAddIntake(intake.intakeId.toLong())
+                            fakeApi.postRemoveIntake(it.intake.intakeId.toLong())
                         } catch (e: Exception) {
-                            Log.d(FakeApi.TAG_FAKE_API, FakeApi.LOG_ADD_INTAKE_FAILED)
+                            Log.d(FakeApi.TAG_FAKE_API, FakeApi.LOG_REMOVE_INTAKE_FAILED)
                         }
                     }
                 }
