@@ -1,9 +1,12 @@
 package com.epam.caloriecalc.ui.history
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.SnackbarResult
@@ -11,6 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -36,6 +42,8 @@ fun HistoryScreen(
 
     val context = LocalContext.current
 
+    var deletedIntakeIndexWithId: Pair<Int?, Int?> by remember { mutableStateOf(Pair(null, null)) }
+
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
             when (event) {
@@ -46,8 +54,14 @@ fun HistoryScreen(
                     )
                     if (result == SnackbarResult.ActionPerformed) {
                         viewModel.onEvent(HistoryEvent.OnUndoDeleteClick)
-
                     }
+                    if (result == SnackbarResult.Dismissed && deletedIntakeIndexWithId.second == null) {
+                        viewModel.onEvent(HistoryEvent.DeleteFinal)
+                    }
+                }
+                is UiEvent.RestoreDeleted -> {
+                    deletedIntakeIndexWithId =
+                        deletedIntakeIndexWithId.copy(second = event.item.intakeId)
                 }
             }
         }
@@ -56,32 +70,51 @@ fun HistoryScreen(
     Scaffold(
         scaffoldState = scaffoldState,
     ) {
-        AnimatedVisibility(visible = intakeHistory.isNotEmpty()) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-            ) {
+        val listState = rememberLazyListState()
 
-                intakeHistory.forEach { (date, productWithIntakes) ->
+        LazyColumn(
+            state = listState,
+            modifier = Modifier.fillMaxSize()
+        ) {
 
-                    stickyHeader {
-                        DateDivider(date = date)
-                    }
+            intakeHistory.forEachIndexed { dateIndex, (date, productWithIntakes) ->
 
-                    val itemList: MutableList<ProductIntake> = mutableListOf()
-                    productWithIntakes.forEach { item ->
-                        item.intakes.forEach { intake ->
-                            itemList.add(
-                                ProductIntake(
-                                    item.product,
-                                    intake
-                                )
+                stickyHeader {
+                    DateDivider(date = date)
+                }
+
+                val itemList: MutableList<ProductIntake> = mutableListOf()
+                productWithIntakes.forEach { item ->
+                    item.intakes.forEach { intake ->
+                        itemList.add(
+                            ProductIntake(
+                                item.product,
+                                intake
                             )
-                        }
+                        )
                     }
+                }
 
-                    itemList.sortedWith(compareByDescending { it.intake.timestamp })
-                        .forEach { productIntake ->
-                            item {
+                itemList.sortedWith(compareByDescending { it.intake.timestamp })
+                    .forEachIndexed { index, productIntake ->
+                        item(key = { it }) {
+                            var visible by remember { mutableStateOf(true) }
+
+                            LaunchedEffect(key1 = deletedIntakeIndexWithId.second == productIntake.intake.intakeId) {
+                                if (deletedIntakeIndexWithId.first != null && deletedIntakeIndexWithId.second != null) {
+                                    visible = true
+                                    listState.animateScrollToItem(
+                                        deletedIntakeIndexWithId.first!!
+                                    )
+                                    deletedIntakeIndexWithId = Pair(null, null)
+                                }
+                            }
+
+                            AnimatedVisibility(
+                                visible = visible,
+                                enter = expandHorizontally(),
+                                exit = shrinkHorizontally()
+                            ) {
                                 CalorieItemCard(
                                     product = productIntake.product,
                                     intake = productIntake.intake,
@@ -95,21 +128,40 @@ fun HistoryScreen(
                                         )
                                     },
                                     onDeleteClick = {
-                                        viewModel.onEvent(
-                                            HistoryEvent.OnDeleteClick(
-                                                ProductIntake(
-                                                    productIntake.product,
-                                                    productIntake.intake
+                                        /* Disable any further deletions until snackbar dismissed. */
+                                        if (scaffoldState.snackbarHostState.currentSnackbarData == null) {
+                                            visible = false
+                                            var deletedIndex = 0
+
+                                            intakeHistory.slice(0 until dateIndex)
+                                                .forEach { entry ->
+                                                    entry.second.forEach { pr ->
+                                                        deletedIndex += pr.intakes.size
+                                                    }
+                                                }
+
+                                            deletedIntakeIndexWithId =
+                                                deletedIntakeIndexWithId.copy(
+                                                    first = deletedIndex + index
+                                                )
+
+                                            viewModel.onEvent(
+                                                HistoryEvent.OnDeleteClick(
+                                                    ProductIntake(
+                                                        productIntake.product,
+                                                        productIntake.intake
+                                                    )
                                                 )
                                             )
-                                        )
+                                        }
                                     }
                                 )
                             }
 
-                        }
-                }
 
+                        }
+
+                    }
             }
         }
     }

@@ -46,15 +46,13 @@ fun AddItemScreen(
 
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
-            when (event) {
-                is UiEvent.ShowSnackbar -> {
-                    val result = scaffoldState.snackbarHostState.showSnackbar(
-                        message = context.getString(event.messageId, event.itemName),
-                        actionLabel = context.getString(event.action.actionResId)
-                    )
-                    if (result == SnackbarResult.ActionPerformed) {
-                        viewModel.onEvent(AddItemEvent.OnUndoClick)
-                    }
+            if(event is UiEvent.ShowSnackbar) {
+                val result = scaffoldState.snackbarHostState.showSnackbar(
+                    message = context.getString(event.messageId, event.itemName),
+                    actionLabel = context.getString(event.action.actionResId)
+                )
+                if (result == SnackbarResult.ActionPerformed) {
+                    viewModel.onEvent(AddItemEvent.OnUndoClick)
                 }
             }
         }
